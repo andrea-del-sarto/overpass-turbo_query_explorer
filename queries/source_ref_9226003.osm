@@ -1,0 +1,10 @@
+[timeout:25][out:json];
+area(3600041977)->.searchArea;
+(
+node["source:ref"="9226003"](area.searchArea);
+way["source:ref"="9226003"](area.searchArea);
+relation["source:ref"="9226003"](area.searchArea);
+);
+out;
+>;
+out skel qt;
