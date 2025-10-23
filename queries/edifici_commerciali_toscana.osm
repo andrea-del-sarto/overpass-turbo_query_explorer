@@ -1,0 +1,10 @@
+[out:json][timeout:85];
+{{geocodeArea:Tuscany}}->.searchArea;
+(
+node["building"~"supermarket|convenience|shop|department|mall|commercial|retail"]["shop"!~".*"](area.searchArea);
+way["building"~"supermarket|convenience|shop|department|mall|commercial|retail"]["shop"!~".*"](area.searchArea);
+relation["building"~"supermarket|convenience|shop|department|mall|commercial|retail"]["shop"!~".*"](area.searchArea);
+);
+out body;
+>;
+out skel qt;
