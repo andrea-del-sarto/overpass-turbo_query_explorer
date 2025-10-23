@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Overpass Query Explorer</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-        h1 { text-align: center; }
-        input { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
-        ul { list-style: none; padding: 0; }
-        li { background: #fff; margin-bottom: 10px; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .tags { font-size: 0.9em; color: #555; margin-top: 5px; }
-        a { text-decoration: none; color: #007acc; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overpass Query Explorer</title>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    h1 { text-align: center; }
+    input { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
+    ul { list-style: none; padding: 0; }
+    li { background: #fff; margin-bottom: 10px; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; }
+    .tags { font-size: 0.9em; color: #555; margin-top: 5px; }
+    pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; max-height: 400px; }
+    button { padding: 10px 15px; margin-top: 10px; background: #007acc; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #005fa3; }
+</style>
 </head>
 <body>
 
@@ -20,6 +22,12 @@
 <input type="text" id="search" placeholder="Cerca per tag o nome della query...">
 
 <ul id="queryList"></ul>
+
+<div id="queryDetail" style="display:none;">
+    <h2 id="queryName"></h2>
+    <pre id="queryCode"></pre>
+    <button id="openOverpass">Apri in Overpass Turbo</button>
+</div>
 
 <script>
 const queries = [
@@ -37,6 +45,10 @@ const queries = [
 
 const queryList = document.getElementById("queryList");
 const searchInput = document.getElementById("search");
+const queryDetail = document.getElementById("queryDetail");
+const queryName = document.getElementById("queryName");
+const queryCode = document.getElementById("queryCode");
+const openOverpass = document.getElementById("openOverpass");
 
 function renderList(filter="") {
     queryList.innerHTML = "";
@@ -46,10 +58,23 @@ function renderList(filter="") {
     );
     filtered.forEach(q => {
         const li = document.createElement("li");
-        li.innerHTML = `<a href="${q.file}" target="_blank">${q.name}</a>
+        li.innerHTML = `<strong>${q.name}</strong>
                         <div class="tags">Tags: ${q.tags.join(", ")}</div>`;
+        li.addEventListener("click", () => loadQuery(q));
         queryList.appendChild(li);
     });
+}
+
+async function loadQuery(q) {
+    const response = await fetch(q.file);
+    const code = await response.text();
+    queryName.textContent = q.name;
+    queryCode.textContent = code;
+    openOverpass.onclick = () => {
+        const url = "https://overpass-turbo.eu/?Q=" + encodeURIComponent(code);
+        window.open(url, "_blank");
+    };
+    queryDetail.style.display = "block";
 }
 
 searchInput.addEventListener("input", e => {
