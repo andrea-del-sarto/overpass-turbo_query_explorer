@@ -45,8 +45,11 @@ h1 { text-align: center; margin-bottom: 20px; }
     color: #fff;
     border: none;
     padding: 8px 12px;
-    border-radius: 5px;
+    border-radius: 50%;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 input {
@@ -59,7 +62,13 @@ input {
     box-sizing: border-box;
 }
 
-ul { list-style: none; padding: 0; display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+ul { 
+    list-style: none; 
+    padding: 0; 
+    display: grid; 
+    gap: 15px; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+}
 
 li {
     background: var(--card-bg);
@@ -79,7 +88,12 @@ li:hover {
 
 #queryDetail { margin-top: 30px; }
 
-pre { border-radius: 12px; padding: 15px; max-height: 500px; overflow-x: auto; }
+pre { 
+    border-radius: 12px; 
+    padding: 15px; 
+    max-height: 500px; 
+    overflow-x: auto; 
+}
 
 button#openOverpass {
     margin-top: 10px;
@@ -102,7 +116,9 @@ button#openOverpass:hover { background: #005fa3; }
 </head>
 <body>
 
-<button id="themeToggle">Toggle Tema</button>
+<button id="themeToggle" title="Cambia tema">
+  <span id="themeIcon"></span>
+</button>
 
 <h1>Overpass Query Explorer</h1>
 <input type="text" id="search" placeholder="Cerca per tag o nome della query...">
@@ -116,6 +132,7 @@ button#openOverpass:hover { background: #005fa3; }
 </div>
 
 <script>
+// --- Lista delle query ---
 const queries = [
     {
         name: "Edifici commerciali in Toscana senza tag shop",
@@ -129,6 +146,7 @@ const queries = [
     }
 ];
 
+// --- Riferimenti DOM ---
 const queryList = document.getElementById("queryList");
 const searchInput = document.getElementById("search");
 const queryDetail = document.getElementById("queryDetail");
@@ -136,6 +154,7 @@ const queryName = document.getElementById("queryName");
 const queryCode = document.getElementById("queryCode");
 const openOverpass = document.getElementById("openOverpass");
 
+// --- Render lista query ---
 function renderList(filter="") {
     queryList.innerHTML = "";
     const filtered = queries.filter(q => 
@@ -151,6 +170,7 @@ function renderList(filter="") {
     });
 }
 
+// --- Carica query e visualizza codice ---
 async function loadQuery(q) {
     const response = await fetch(q.file);
     const code = await response.text();
@@ -168,21 +188,46 @@ searchInput.addEventListener("input", e => {
     renderList(e.target.value.toLowerCase());
 });
 
-// inizializza lista
+// Inizializza lista
 renderList();
 
-// Tema chiaro/scuro automatico + toggle
+// --- Gestione tema chiaro/scuro con icone ---
 const themeToggle = document.getElementById("themeToggle");
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+const themeIcon = document.getElementById("themeIcon");
 
-document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+function getSunIcon() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 4V1h-1v3h1zm0 19v-3h-1v3h1zm8.66-11h3v-1h-3v1zm-19.32 0h3v-1h-3v1zm15.9 7.66l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zm-12.02 0l-1.8 1.79 1.41 1.41 1.79-1.8-1.4-1.4zM12 8a4 4 0 100 8 4 4 0 000-8z"/>
+  </svg>`;
+}
 
+function getMoonIcon() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>
+  </svg>`;
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.getElementById("prism-theme-light").disabled = theme === "dark";
+    document.getElementById("prism-theme-dark").disabled = theme === "light";
+    themeIcon.innerHTML = theme === "dark" ? getSunIcon() : getMoonIcon();
+}
+
+// Tema iniziale basato sul sistema
+let currentTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+applyTheme(currentTheme);
+
+// Toggle manuale
 themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    const newTheme = current === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    document.getElementById("prism-theme-light").disabled = newTheme === "dark";
-    document.getElementById("prism-theme-dark").disabled = newTheme === "light";
+    currentTheme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(currentTheme);
+});
+
+// Aggiornamento automatico se cambia il tema del sistema
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+    currentTheme = e.matches ? "dark" : "light";
+    applyTheme(currentTheme);
 });
 </script>
 
