@@ -4,19 +4,105 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overpass Query Explorer</title>
+
+<!-- Prism.js per evidenziazione codice -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" id="prism-theme-light">
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css" rel="stylesheet" id="prism-theme-dark" disabled>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+
 <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-    h1 { text-align: center; }
-    input { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
-    ul { list-style: none; padding: 0; }
-    li { background: #fff; margin-bottom: 10px; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; }
-    .tags { font-size: 0.9em; color: #555; margin-top: 5px; }
-    pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; max-height: 400px; }
-    button { padding: 10px 15px; margin-top: 10px; background: #007acc; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #005fa3; }
+:root {
+    --bg: #f5f5f5;
+    --card-bg: #fff;
+    --text: #111;
+    --accent: #007acc;
+}
+
+[data-theme="dark"] {
+    --bg: #121212;
+    --card-bg: #1e1e1e;
+    --text: #eee;
+    --accent: #1e90ff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+    transition: background 0.3s, color 0.3s;
+}
+
+h1 { text-align: center; margin-bottom: 20px; }
+
+#themeToggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+ul { list-style: none; padding: 0; display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+li {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.tags { font-size: 0.85em; color: #555; margin-top: 5px; }
+
+#queryDetail { margin-top: 30px; }
+
+pre { border-radius: 12px; padding: 15px; max-height: 500px; overflow-x: auto; }
+
+button#openOverpass {
+    margin-top: 10px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button#openOverpass:hover { background: #005fa3; }
+
+@media (max-width: 500px) {
+    input { font-size: 14px; }
+    button#openOverpass { font-size: 14px; padding: 10px 15px; }
+}
 </style>
 </head>
 <body>
+
+<button id="themeToggle">Toggle Tema</button>
 
 <h1>Overpass Query Explorer</h1>
 <input type="text" id="search" placeholder="Cerca per tag o nome della query...">
@@ -25,7 +111,7 @@
 
 <div id="queryDetail" style="display:none;">
     <h2 id="queryName"></h2>
-    <pre id="queryCode"></pre>
+    <pre><code id="queryCode" class="language-bash"></code></pre>
     <button id="openOverpass">Apri in Overpass Turbo</button>
 </div>
 
@@ -70,6 +156,7 @@ async function loadQuery(q) {
     const code = await response.text();
     queryName.textContent = q.name;
     queryCode.textContent = code;
+    Prism.highlightElement(queryCode);
     openOverpass.onclick = () => {
         const url = "https://overpass-turbo.eu/?Q=" + encodeURIComponent(code);
         window.open(url, "_blank");
@@ -83,6 +170,20 @@ searchInput.addEventListener("input", e => {
 
 // inizializza lista
 renderList();
+
+// Tema chiaro/scuro automatico + toggle
+const themeToggle = document.getElementById("themeToggle");
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+
+themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const newTheme = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    document.getElementById("prism-theme-light").disabled = newTheme === "dark";
+    document.getElementById("prism-theme-dark").disabled = newTheme === "light";
+});
 </script>
 
 </body>
