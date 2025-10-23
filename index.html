@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overpass Query Explorer</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        h1 { text-align: center; }
+        input { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
+        ul { list-style: none; padding: 0; }
+        li { background: #fff; margin-bottom: 10px; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .tags { font-size: 0.9em; color: #555; margin-top: 5px; }
+        a { text-decoration: none; color: #007acc; }
+    </style>
+</head>
+<body>
+
+<h1>Overpass Query Explorer</h1>
+<input type="text" id="search" placeholder="Cerca per tag o nome della query...">
+
+<ul id="queryList"></ul>
+
+<script>
+const queries = [
+    {
+        name: "Edifici commerciali in Toscana senza tag shop",
+        file: "queries/edifici_commerciali_toscana.osm",
+        tags: ["Toscana", "commerciale", "shop", "edifici"]
+    },
+    {
+        name: "Elementi con source:ref=9226003",
+        file: "queries/source_ref_9226003.osm",
+        tags: ["source:ref", "9226003"]
+    }
+];
+
+const queryList = document.getElementById("queryList");
+const searchInput = document.getElementById("search");
+
+function renderList(filter="") {
+    queryList.innerHTML = "";
+    const filtered = queries.filter(q => 
+        q.name.toLowerCase().includes(filter) || 
+        q.tags.some(tag => tag.toLowerCase().includes(filter))
+    );
+    filtered.forEach(q => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="${q.file}" target="_blank">${q.name}</a>
+                        <div class="tags">Tags: ${q.tags.join(", ")}</div>`;
+        queryList.appendChild(li);
+    });
+}
+
+searchInput.addEventListener("input", e => {
+    renderList(e.target.value.toLowerCase());
+});
+
+// inizializza lista
+renderList();
+</script>
+
+</body>
+</html>
