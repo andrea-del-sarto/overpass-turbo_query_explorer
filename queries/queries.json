@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Edifici commerciali in Toscana senza tag shop",
+        "file": "edifici_commerciali_toscana.osm",
+        "tags": ["Toscana", "commerciale", "shop", "edifici"]
+    },
+    {
+        "name": "Elementi con source:ref=9226003",
+        "file": "source_ref_9226003.osm",
+        "tags": ["source:ref", "9226003"]
+    }
+]
