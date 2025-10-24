@@ -1,3 +1,6 @@
+### v0.3.0
+- add filter by tag
+
 ### v0.2.0
 - remove hardcoded query list from index.html
 
