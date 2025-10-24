@@ -23,7 +23,6 @@
     --text: #eee;
     --accent: #1e90ff;
 }
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--bg);
@@ -31,94 +30,40 @@ body {
     margin: 0;
     padding: 20px;
     transition: background 0.3s, color 0.3s;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
-
 h1 { text-align: center; margin-bottom: 20px; }
-
-#themeToggle {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#githubLink {
-    position: fixed;
-    top: 22px;
-    right: 80px;
-    color: var(--text);
-    text-decoration: none;
-    transition: transform 0.2s, color 0.3s;
-}
+#themeToggle { position: fixed; top: 15px; right: 15px; background: var(--accent); color: #fff; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+#githubLink { position: fixed; top: 22px; right: 80px; color: var(--text); text-decoration: none; transition: transform 0.2s, color 0.3s; }
 #githubLink:hover { transform: scale(1.1); color: var(--accent); }
 [data-theme="dark"] #githubLink svg { fill: #eee; }
 [data-theme="light"] #githubLink svg { fill: #111; }
-
-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-}
-
-#tagFilters {
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-#tagFilters button {
-    font-size: 0.9em;
-    transition: transform 0.2s;
-}
+input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; box-sizing: border-box; }
+#tagFilters { margin-bottom: 20px; display:flex; flex-wrap:wrap; gap:8px; }
+#tagFilters button { font-size: 0.9em; transition: transform 0.2s; }
 #tagFilters button:hover { transform: scale(1.05); }
 #tagFilters button.active { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent); transform: scale(1.1); }
 
-/* Contenitore principale due colonne */
+/* Contenitore principale */
 #mainContainer {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 20px;
-    flex: 1;
-    overflow: hidden; /* per scroll indipendente */
+    margin-top: 20px;
 }
 
-/* Lista query con scroll */
+/* Lista query */
 #queryList {
     display: grid;
     gap: 15px;
     grid-template-columns: 1fr;
-    list-style: none;
+    list-style: none; /* rimuove i pallini */
     padding: 0;
-    overflow-y: auto;
-    max-height: 100%;
 }
-li {
-    background: var(--card-bg);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+li { background: var(--card-bg); padding: 15px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
 li:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
 .tags { font-size: 0.85em; color: #555; margin-top: 5px; }
 
-/* Dettaglio query con scroll */
+/* Dettaglio query */
 #queryDetail {
     display: flex;
     flex-direction: column;
@@ -129,7 +74,6 @@ li:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     border-radius: 12px;
     min-height: 400px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    overflow-y: auto;
 }
 #queryDetail.empty {
     display: flex;
@@ -139,38 +83,25 @@ li:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     font-style: italic;
     font-size: 1.1em;
 }
-
-pre {
-    border-radius: 12px;
-    padding: 15px;
-    overflow-x: auto;
-    margin-top: 10px;
-}
-
-.queryHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-button.openOverpass {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
+pre { border-radius: 12px; padding: 15px; max-height: 500px; overflow-x: auto; margin-top: 10px; }
+button.openOverpass { 
+    background: var(--accent); 
+    color: white; 
+    border: none; 
+    padding: 6px 12px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    margin-left: auto;
 }
 button.openOverpass:hover { background: #005fa3; }
+
+/* Titolo + pulsante inline */
+.queryHeader { display: flex; align-items: center; justify-content: space-between; }
 
 @media (max-width: 900px) {
     #mainContainer {
         grid-template-columns: 1fr;
-    }
-    #queryList, #queryDetail {
-        max-height: none;
-        overflow-y: visible;
     }
 }
 @media (max-width: 600px) {
@@ -214,6 +145,7 @@ const tagFilters = document.getElementById("tagFilters");
 let queries = [];
 let activeTags = [];
 
+// --- Carica queries da JSON ---
 async function loadQueries() {
     const response = await fetch('queries/queries.json');
     queries = await response.json();
@@ -221,6 +153,7 @@ async function loadQueries() {
     renderTagButtons();
 }
 
+// --- Lista query filtrata per ricerca e tag ---
 function renderList(filter="", activeTagsParam=activeTags) {
     queryList.innerHTML = "";
     const filtered = queries.filter(q => {
@@ -237,6 +170,7 @@ function renderList(filter="", activeTagsParam=activeTags) {
     });
 }
 
+// --- Carica query singola ---
 async function loadQuery(q) {
     const response = await fetch(`queries/${q.file}`);
     const code = await response.text();
@@ -256,12 +190,14 @@ async function loadQuery(q) {
     };
 }
 
+// --- Ricerca ---
 searchInput.addEventListener("input", e => {
     queryDetail.innerHTML = "Seleziona una query per visualizzarla";
     queryDetail.classList.add("empty");
     renderList(e.target.value.toLowerCase());
 });
 
+// --- Pulsanti tag multi-selezione ---
 function renderTagButtons() {
     const allTags = [...new Set(queries.flatMap(q => q.tags))];
     tagFilters.innerHTML = "";
@@ -314,6 +250,7 @@ function renderTagButtons() {
     });
 }
 
+// --- Tema chiaro/scuro ---
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
@@ -340,6 +277,7 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e=>
     applyTheme(currentTheme);
 });
 
+// --- Inizializza ---
 loadQueries();
 </script>
 
