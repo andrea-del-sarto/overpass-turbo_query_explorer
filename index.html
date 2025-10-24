@@ -37,7 +37,11 @@ h1 { text-align: center; margin-bottom: 20px; }
 #githubLink:hover { transform: scale(1.1); color: var(--accent); }
 [data-theme="dark"] #githubLink svg { fill: #eee; }
 [data-theme="light"] #githubLink svg { fill: #111; }
-input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 20px; box-sizing: border-box; }
+input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; box-sizing: border-box; }
+#tagFilters { margin-bottom: 20px; display:flex; flex-wrap:wrap; gap:8px; }
+#tagFilters button { font-size: 0.9em; transition: transform 0.2s; }
+#tagFilters button:hover { transform: scale(1.05); }
+#tagFilters button.active { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent); transform: scale(1.1); }
 ul { list-style: none; padding: 0; display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 li { background: var(--card-bg); padding: 15px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
 li:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
@@ -72,6 +76,7 @@ button#openOverpass:hover { background: #005fa3; }
 </header>
 
 <input type="text" id="search" placeholder="Cerca per tag o nome della query...">
+<div id="tagFilters"></div>
 <ul id="queryList"></ul>
 
 <div id="queryDetail" style="display:none;">
@@ -87,6 +92,7 @@ const queryDetail = document.getElementById("queryDetail");
 const queryName = document.getElementById("queryName");
 const queryCode = document.getElementById("queryCode");
 const openOverpass = document.getElementById("openOverpass");
+const tagFilters = document.getElementById("tagFilters");
 
 let queries = [];
 
@@ -95,6 +101,7 @@ async function loadQueries() {
     const response = await fetch('queries/queries.json');
     queries = await response.json();
     renderList();
+    renderTagButtons();
 }
 
 function renderList(filter="") {
@@ -125,9 +132,58 @@ async function loadQuery(q) {
     queryDetail.style.display = "block";
 }
 
+// --- Ricerca ---
 searchInput.addEventListener("input", e => {
     renderList(e.target.value.toLowerCase());
 });
+
+// --- Pulsanti tag con evidenziazione ---
+function renderTagButtons() {
+    const allTags = [...new Set(queries.flatMap(q => q.tags))];
+    tagFilters.innerHTML = "";
+
+    let activeButton = null;
+
+    // Pulsante Reset
+    const resetBtn = document.createElement("button");
+    resetBtn.textContent = "Tutti";
+    resetBtn.style.background = "#888";
+    resetBtn.style.color = "#fff";
+    resetBtn.style.border = "none";
+    resetBtn.style.borderRadius = "8px";
+    resetBtn.style.padding = "6px 12px";
+    resetBtn.style.cursor = "pointer";
+    resetBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        renderList();
+        if (activeButton) activeButton.classList.remove("active");
+        activeButton = resetBtn;
+        activeButton.classList.add("active");
+    });
+    tagFilters.appendChild(resetBtn);
+
+    activeButton = resetBtn;
+    activeButton.classList.add("active");
+
+    allTags.forEach(tag => {
+        const btn = document.createElement("button");
+        btn.textContent = tag;
+        btn.style.background = "var(--accent)";
+        btn.style.color = "#fff";
+        btn.style.border = "none";
+        btn.style.borderRadius = "8px";
+        btn.style.padding = "6px 12px";
+        btn.style.cursor = "pointer";
+        btn.addEventListener("click", () => {
+            searchInput.value = "";
+            renderList(tag.toLowerCase());
+            if (activeButton) activeButton.classList.remove("active");
+            activeButton = btn;
+            activeButton.classList.add("active");
+        });
+        tagFilters.appendChild(btn);
+    });
+}
 
 // --- Tema chiaro/scuro ---
 const themeToggle = document.getElementById("themeToggle");
