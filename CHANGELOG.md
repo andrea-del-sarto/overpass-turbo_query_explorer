@@ -1,3 +1,6 @@
+### v0.4.0
+- add multi filter by tag
+
 ### v0.3.0
 - add filter by tag
 
