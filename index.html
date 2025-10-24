@@ -35,7 +35,10 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
-h1 { text-align: center; margin-bottom: 20px; }
+h1 { 
+    text-align: center; 
+    margin-bottom: 20px; 
+}
 
 #themeToggle {
     position: fixed;
@@ -50,6 +53,28 @@ h1 { text-align: center; margin-bottom: 20px; }
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* --- GitHub Icon --- */
+#githubLink {
+    position: fixed;
+    top: 22px;
+    right: 80px; /* accanto al toggle */
+    color: var(--text);
+    text-decoration: none;
+    transition: transform 0.2s, color 0.3s;
+}
+
+#githubLink:hover {
+    transform: scale(1.1);
+    color: var(--accent);
+}
+
+[data-theme="dark"] #githubLink svg {
+    fill: #eee;
+}
+[data-theme="light"] #githubLink svg {
+    fill: #111;
 }
 
 input {
@@ -84,9 +109,15 @@ li:hover {
     box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
 
-.tags { font-size: 0.85em; color: #555; margin-top: 5px; }
+.tags { 
+    font-size: 0.85em; 
+    color: #555; 
+    margin-top: 5px; 
+}
 
-#queryDetail { margin-top: 30px; }
+#queryDetail { 
+    margin-top: 30px; 
+}
 
 pre { 
     border-radius: 12px; 
@@ -106,9 +137,24 @@ button#openOverpass {
     font-size: 16px;
 }
 
-button#openOverpass:hover { background: #005fa3; }
+button#openOverpass:hover { 
+    background: #005fa3; 
+}
 
-@media (max-width: 500px) {
+/* --- Responsive --- */
+@media (max-width: 600px) {
+    #githubLink, #themeToggle {
+        position: static;
+        display: inline-flex;
+        margin: 0 5px;
+    }
+    header {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    header div {
+        margin-top: 10px;
+    }
     input { font-size: 14px; }
     button#openOverpass { font-size: 14px; padding: 10px 15px; }
 }
@@ -116,11 +162,21 @@ button#openOverpass:hover { background: #005fa3; }
 </head>
 <body>
 
-<button id="themeToggle" title="Cambia tema">
-  <span id="themeIcon"></span>
-</button>
+<!-- Header con icona GitHub e toggle tema -->
+<header>
+  <div style="display:flex; justify-content:flex-end; align-items:center; gap:10px; flex-wrap:wrap;">
+    <a id="githubLink" href="https://github.com/andrea-del-sarto/overpass-turbo_query_explorer" target="_blank" title="Apri su GitHub">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 .297a12 12 0 00-3.794 23.419c.6.111.793-.261.793-.579v-2.021c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.729.083-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.776.419-1.305.762-1.606-2.665-.304-5.466-1.333-5.466-5.931 0-1.311.469-2.382 1.236-3.222-.124-.303-.536-1.527.117-3.183 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 016.004 0c2.292-1.552 3.3-1.23 3.3-1.23.653 1.656.241 2.88.118 3.183.768.84 1.236 1.911 1.236 3.222 0 4.609-2.803 5.625-5.475 5.922.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.577A12.004 12.004 0 0012 .297z"/>
+      </svg>
+    </a>
+    <button id="themeToggle" title="Cambia tema">
+      <span id="themeIcon"></span>
+    </button>
+  </div>
+  <h1>Overpass-Turbo Query Explorer</h1>
+</header>
 
-<h1>Overpass-Turbo Query Explorer</h1>
 <input type="text" id="search" placeholder="Cerca per tag o nome della query...">
 
 <ul id="queryList"></ul>
