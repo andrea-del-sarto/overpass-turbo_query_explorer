@@ -138,6 +138,7 @@ async function loadQuery(q) {
 
 // --- Ricerca ---
 searchInput.addEventListener("input", e => {
+    queryDetail.style.display = "none";  // nasconde query aperta
     renderList(e.target.value.toLowerCase());
 });
 
@@ -158,6 +159,7 @@ function renderTagButtons() {
     resetBtn.classList.add("active");
     resetBtn.addEventListener("click", () => {
         activeTags = [];
+        queryDetail.style.display = "none";
         renderList(searchInput.value.toLowerCase());
         document.querySelectorAll("#tagFilters button").forEach(btn => btn.classList.remove("active"));
         resetBtn.classList.add("active");
@@ -188,6 +190,7 @@ function renderTagButtons() {
             if(activeTags.length > 0) resetBtn.classList.remove("active");
             else resetBtn.classList.add("active");
 
+            queryDetail.style.display = "none";  // nasconde query aperta
             renderList(searchInput.value.toLowerCase());
         });
 
