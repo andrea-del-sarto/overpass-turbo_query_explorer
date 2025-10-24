@@ -1,3 +1,7 @@
+### v0.1.1
+- add repo url
+- fix responsive mode
+
 ### v0.1.0
 - new theme
 - add view query and overpass-turbo run
