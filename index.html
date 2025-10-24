@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overpass-Turbo Query Explorer</title>
 
-<!-- Prism.js per evidenziazione codice -->
 <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" id="prism-theme-light">
 <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css" rel="stylesheet" id="prism-theme-dark" disabled>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
@@ -18,14 +17,12 @@
     --text: #111;
     --accent: #007acc;
 }
-
 [data-theme="dark"] {
     --bg: #121212;
     --card-bg: #1e1e1e;
     --text: #eee;
     --accent: #1e90ff;
 }
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--bg);
@@ -34,127 +31,25 @@ body {
     padding: 20px;
     transition: background 0.3s, color 0.3s;
 }
-
-h1 { 
-    text-align: center; 
-    margin-bottom: 20px; 
-}
-
-#themeToggle {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* --- GitHub Icon --- */
-#githubLink {
-    position: fixed;
-    top: 22px;
-    right: 80px; /* accanto al toggle */
-    color: var(--text);
-    text-decoration: none;
-    transition: transform 0.2s, color 0.3s;
-}
-
-#githubLink:hover {
-    transform: scale(1.1);
-    color: var(--accent);
-}
-
-[data-theme="dark"] #githubLink svg {
-    fill: #eee;
-}
-[data-theme="light"] #githubLink svg {
-    fill: #111;
-}
-
-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-}
-
-ul { 
-    list-style: none; 
-    padding: 0; 
-    display: grid; 
-    gap: 15px; 
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-}
-
-li {
-    background: var(--card-bg);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-li:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-}
-
-.tags { 
-    font-size: 0.85em; 
-    color: #555; 
-    margin-top: 5px; 
-}
-
-#queryDetail { 
-    margin-top: 30px; 
-}
-
-pre { 
-    border-radius: 12px; 
-    padding: 15px; 
-    max-height: 500px; 
-    overflow-x: auto; 
-}
-
-button#openOverpass {
-    margin-top: 10px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button#openOverpass:hover { 
-    background: #005fa3; 
-}
-
-/* --- Responsive --- */
+h1 { text-align: center; margin-bottom: 20px; }
+#themeToggle { position: fixed; top: 15px; right: 15px; background: var(--accent); color: #fff; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+#githubLink { position: fixed; top: 22px; right: 80px; color: var(--text); text-decoration: none; transition: transform 0.2s, color 0.3s; }
+#githubLink:hover { transform: scale(1.1); color: var(--accent); }
+[data-theme="dark"] #githubLink svg { fill: #eee; }
+[data-theme="light"] #githubLink svg { fill: #111; }
+input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 20px; box-sizing: border-box; }
+ul { list-style: none; padding: 0; display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+li { background: var(--card-bg); padding: 15px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+li:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
+.tags { font-size: 0.85em; color: #555; margin-top: 5px; }
+#queryDetail { margin-top: 30px; }
+pre { border-radius: 12px; padding: 15px; max-height: 500px; overflow-x: auto; }
+button#openOverpass { margin-top: 10px; background: var(--accent); color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+button#openOverpass:hover { background: #005fa3; }
 @media (max-width: 600px) {
-    #githubLink, #themeToggle {
-        position: static;
-        display: inline-flex;
-        margin: 0 5px;
-    }
-    header {
-        text-align: center;
-        margin-bottom: 15px;
-    }
-    header div {
-        margin-top: 10px;
-    }
+    #githubLink, #themeToggle { position: static; display: inline-flex; margin: 0 5px; }
+    header { text-align: center; margin-bottom: 15px; }
+    header div { margin-top: 10px; }
     input { font-size: 14px; }
     button#openOverpass { font-size: 14px; padding: 10px 15px; }
 }
@@ -162,7 +57,6 @@ button#openOverpass:hover {
 </head>
 <body>
 
-<!-- Header con icona GitHub e toggle tema -->
 <header>
   <div style="display:flex; justify-content:flex-end; align-items:center; gap:10px; flex-wrap:wrap;">
     <a id="githubLink" href="https://github.com/andrea-del-sarto/overpass-turbo_query_explorer" target="_blank" title="Apri su GitHub">
@@ -178,7 +72,6 @@ button#openOverpass:hover {
 </header>
 
 <input type="text" id="search" placeholder="Cerca per tag o nome della query...">
-
 <ul id="queryList"></ul>
 
 <div id="queryDetail" style="display:none;">
@@ -188,21 +81,6 @@ button#openOverpass:hover {
 </div>
 
 <script>
-// --- Lista delle query ---
-const queries = [
-    {
-        name: "Edifici commerciali in Toscana senza tag shop",
-        file: "queries/edifici_commerciali_toscana.osm",
-        tags: ["Toscana", "commerciale", "shop", "edifici"]
-    },
-    {
-        name: "Elementi con source:ref=9226003",
-        file: "queries/source_ref_9226003.osm",
-        tags: ["source:ref", "9226003"]
-    }
-];
-
-// --- Riferimenti DOM ---
 const queryList = document.getElementById("queryList");
 const searchInput = document.getElementById("search");
 const queryDetail = document.getElementById("queryDetail");
@@ -210,7 +88,15 @@ const queryName = document.getElementById("queryName");
 const queryCode = document.getElementById("queryCode");
 const openOverpass = document.getElementById("openOverpass");
 
-// --- Render lista query ---
+let queries = [];
+
+// --- Carica queries da JSON ---
+async function loadQueries() {
+    const response = await fetch('queries/queries.json');
+    queries = await response.json();
+    renderList();
+}
+
 function renderList(filter="") {
     queryList.innerHTML = "";
     const filtered = queries.filter(q => 
@@ -226,9 +112,8 @@ function renderList(filter="") {
     });
 }
 
-// --- Carica query e visualizza codice ---
 async function loadQuery(q) {
-    const response = await fetch(q.file);
+    const response = await fetch(`queries/${q.file}`);
     const code = await response.text();
     queryName.textContent = q.name;
     queryCode.textContent = code;
@@ -244,47 +129,35 @@ searchInput.addEventListener("input", e => {
     renderList(e.target.value.toLowerCase());
 });
 
-// Inizializza lista
-renderList();
-
-// --- Gestione tema chiaro/scuro con icone ---
+// --- Tema chiaro/scuro ---
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
-function getSunIcon() {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 4V1h-1v3h1zm0 19v-3h-1v3h1zm8.66-11h3v-1h-3v1zm-19.32 0h3v-1h-3v1zm15.9 7.66l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zm-12.02 0l-1.8 1.79 1.41 1.41 1.79-1.8-1.4-1.4zM12 8a4 4 0 100 8 4 4 0 000-8z"/>
-  </svg>`;
-}
+function getSunIcon(){ return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 4V1h-1v3h1zm0 19v-3h-1v3h1zm8.66-11h3v-1h-3v1zm-19.32 0h3v-1h-3v1zm15.9 7.66l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zm-12.02 0l-1.8 1.79 1.41 1.41 1.79-1.8-1.4-1.4zM12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>`; }
+function getMoonIcon(){ return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg>`; }
 
-function getMoonIcon() {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>
-  </svg>`;
-}
-
-function applyTheme(theme) {
+function applyTheme(theme){
     document.documentElement.setAttribute("data-theme", theme);
     document.getElementById("prism-theme-light").disabled = theme === "dark";
     document.getElementById("prism-theme-dark").disabled = theme === "light";
     themeIcon.innerHTML = theme === "dark" ? getSunIcon() : getMoonIcon();
 }
 
-// Tema iniziale basato sul sistema
 let currentTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 applyTheme(currentTheme);
 
-// Toggle manuale
-themeToggle.addEventListener("click", () => {
-    currentTheme = currentTheme === "dark" ? "light" : "dark";
+themeToggle.addEventListener("click", ()=>{
+    currentTheme = currentTheme==="dark" ? "light" : "dark";
     applyTheme(currentTheme);
 });
 
-// Aggiornamento automatico se cambia il tema del sistema
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e=>{
     currentTheme = e.matches ? "dark" : "light";
     applyTheme(currentTheme);
 });
+
+// --- Inizializza ---
+loadQueries();
 </script>
 
 </body>
