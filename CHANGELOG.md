@@ -1,3 +1,6 @@
+### v0.2.0
+- remove hardcoded query list from index.html
+
 ### v0.1.1
 - add repo url
 - fix responsive mode
