@@ -1,6 +1,7 @@
 ### v0.4.0
 - add multi filter by tag
 - hide query detail on input and reset actions
+- new desktop ui
 
 ### v0.3.0
 - add filter by tag
