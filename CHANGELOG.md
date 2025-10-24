@@ -1,3 +1,6 @@
+### v0.4.1
+- separate scroll for query list and detail
+  
 ### v0.4.0
 - add multi filter by tag
 - hide query detail on input and reset actions
